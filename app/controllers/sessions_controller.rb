@@ -1,25 +1,19 @@
-# frozen_string_literal: true
-
-class SessionsController < Devise::SessionsController
-  respond_to :json
-
-  before_action :set_devise_mapping
-
+class SessionsController < ApplicationController
   def create
-    self.resource = warden.authenticate!(auth_options)
-    sign_in(resource_name, resource)
+    user = User.find_by(email: params[:session][:email].downcase)
 
-    render json: { message: 'Login successful', user: resource }, status: :ok
-  end
-
-  def destroy
-    signed_out = (Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name))
-    render json: { message: 'Logout successful' }, status: :ok
+    if user && user.authenticate(params[:session][:password])
+      token = generate_token(user)
+      render json: { message: 'Login successful', user: user, token: token }, status: :created
+    else
+      render json: { errors: ['Invalid email or password'] }, status: :unauthorized
+    end
   end
 
   private
 
-  def set_devise_mapping
-    request.env["devise.mapping"] = Devise.mappings[:user]
+  def generate_token(user)
+    secret_key = ENV['SECRET_KEY_BASE']
+    JWT.encode({ user_id: user.id }, secret_key, 'HS256')
   end
 end
