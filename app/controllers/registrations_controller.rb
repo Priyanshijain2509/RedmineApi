@@ -16,6 +16,9 @@ class RegistrationsController < ApplicationController
     end
   end
 
+  def update
+  end
+
   private
 
   def registration_params

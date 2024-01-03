@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  project_name: MyString
+  project_description: MyString
+  identifier: MyString
+  public: false
+  issue_tracking: false
+  project_news: false
+  wiki: false
+  assigned_to: MyString
+  user: one
+
+two:
+  project_name: MyString
+  project_description: MyString
+  identifier: MyString
+  public: false
+  issue_tracking: false
+  project_news: false
+  wiki: false
+  assigned_to: MyString
+  user: two

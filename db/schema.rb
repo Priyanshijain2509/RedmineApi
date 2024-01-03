@@ -10,7 +10,118 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_02_092241) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_03_125257) do
+  create_table "action_text_rich_texts", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "body"
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
+  end
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.string "service_name", null: false
+    t.bigint "byte_size", null: false
+    t.string "checksum"
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.string "comment_body"
+    t.string "comment_added_by"
+    t.integer "project_id"
+    t.integer "user_id"
+    t.integer "news_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "edit_issues", force: :cascade do |t|
+    t.string "notes"
+    t.string "updated_by"
+    t.integer "issue_id", null: false
+    t.integer "project_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["issue_id"], name: "index_edit_issues_on_issue_id"
+  end
+
+  create_table "issues", force: :cascade do |t|
+    t.string "tracker", null: false
+    t.string "subject", null: false
+    t.string "issue_description"
+    t.string "issue_status"
+    t.string "category"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.integer "estimated_time"
+    t.string "assignee"
+    t.boolean "issue_resolved"
+    t.integer "project_id", null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "news", force: :cascade do |t|
+    t.string "news_title"
+    t.string "news_content"
+    t.string "news_added_by"
+    t.integer "project_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.string "attr_change", null: false
+    t.string "new_data", null: false
+    t.boolean "read"
+    t.integer "issue_id", null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["issue_id"], name: "index_notifications_on_issue_id"
+    t.index ["user_id"], name: "index_notifications_on_user_id"
+  end
+
+  create_table "projects", force: :cascade do |t|
+    t.string "project_name"
+    t.string "project_description"
+    t.string "identifier"
+    t.boolean "public"
+    t.boolean "issue_tracking"
+    t.boolean "project_news"
+    t.boolean "wiki"
+    t.string "assigned_to"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_projects_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "reset_password_token"
@@ -27,8 +138,34 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_02_092241) do
     t.string "language"
     t.string "nick_name"
     t.string "password_digest"
+    t.string "assigned_projects"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "wikis", force: :cascade do |t|
+    t.string "wiki_text"
+    t.integer "project_id", null: false
+    t.integer "created_by", null: false
+    t.integer "updated_by", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "comments", "news"
+  add_foreign_key "comments", "projects"
+  add_foreign_key "comments", "users"
+  add_foreign_key "edit_issues", "issues"
+  add_foreign_key "edit_issues", "projects"
+  add_foreign_key "issues", "projects"
+  add_foreign_key "issues", "users"
+  add_foreign_key "news", "projects"
+  add_foreign_key "notifications", "issues"
+  add_foreign_key "notifications", "users"
+  add_foreign_key "projects", "users"
+  add_foreign_key "wikis", "projects"
+  add_foreign_key "wikis", "users", column: "created_by"
+  add_foreign_key "wikis", "users", column: "updated_by"
 end

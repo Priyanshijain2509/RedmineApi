@@ -10,6 +10,15 @@ class SessionsController < ApplicationController
     end
   end
 
+  def destroy
+    token = request.headers['Authorization']
+    if token
+      render json: { message: 'Logout successful...' }, status: :ok
+    else
+      render json: { errors: ['Invalid token'] }, status: :unauthorized
+    end
+  end
+
   private
 
   def generate_token(user)
