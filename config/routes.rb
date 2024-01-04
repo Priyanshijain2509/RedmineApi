@@ -1,10 +1,11 @@
 Rails.application.routes.draw do
-  get 'sessions/new'
-  get '/confirmation', to: 'confirmations#show'
+
   post '/registrations', to: 'registrations#create'
-  patch '/users/:id/edit', to: 'registrations#update'
+  patch '/users/:id/update', to: 'registrations#update'
+  get '/confirmation', to: 'confirmations#show'
   post '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy'
+  post '/users/:user_id/projects', to: 'projects#create'
 
   devise_for :users
   # devise_scope :user do
