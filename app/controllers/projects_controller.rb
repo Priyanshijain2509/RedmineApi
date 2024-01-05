@@ -1,4 +1,11 @@
 class ProjectsController < ApplicationController
+
+  def index
+    @projects = User.find(params[:user_id]).projects
+    render json: { message: 'Projects fetched', projects: @projects},
+      status: :ok
+  end
+
   def create
     @project = Project.new(project_params)
     if @project.save

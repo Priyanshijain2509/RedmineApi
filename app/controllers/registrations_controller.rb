@@ -26,6 +26,13 @@ class RegistrationsController < ApplicationController
     end
   end
 
+  def search
+    search_term = params[:email]
+    @users = User.where('email LIKE ?', "%#{search_term}%")
+
+    render json: { users: @users }
+  end
+  
   private
 
   def user_params
