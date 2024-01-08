@@ -11,6 +11,9 @@ Rails.application.routes.draw do
 
   post '/users/:user_id/projects', to: 'projects#create'
   get '/users/:user_id/projects', to: 'projects#index'
+  post '/users/:user_id/projects/:project_id/addContributor', to: 'projects#addContributor'
+  post '/users/:user_id/projects/:project_id/removeContributor', to: 'projects#removeContributor'
+  get '/users/:user_id/projects/:project_id/fetchContributors', to: 'projects#fetchContributors'
 
   post '/users/:user_id/projects/:project_id/issues', to: 'issues#create'
   get '/users/:user_id/projects/:project_id/issues', to: 'issues#index'
@@ -18,7 +21,7 @@ Rails.application.routes.draw do
 
   devise_for :users
   # devise_scope :user do
-  #   # Your Devise routes go her
+  #   # Your Devise routes go here
   #   post '/users/sign_in' => 'sessions#create'
   # end
 end

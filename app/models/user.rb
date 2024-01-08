@@ -2,6 +2,7 @@ class User < ApplicationRecord
   has_secure_password
   has_many :projects, dependent: :destroy
   validates :email, presence: true, uniqueness: true
+  serialize :assigned_projects, Array
 
   # Include default devise modules. Others available are:
   # :lockable, :timeoutable, :trackable and :omniauthable, :database_authenticatable

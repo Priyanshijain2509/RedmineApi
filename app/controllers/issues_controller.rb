@@ -10,6 +10,7 @@ class IssuesController < ApplicationController
 
   def create
     @issue = Issue.new(issue_params)
+    debugger
     if @issue.save
       render json: { message: 'Issue raised!' }, status: :created
     else
