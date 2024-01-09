@@ -55,7 +55,6 @@ class ProjectsController < ApplicationController
       user = User.find_by(id: id)
       @contributors << { id: id, first_name: user&.first_name } if user
     end
-    debugger
     if @contributors
       render json: { contributors: @contributors }, status: :ok
     else
@@ -84,7 +83,6 @@ class ProjectsController < ApplicationController
 
   # remove from user model assigned_projects column
   def update_removed_user_projects(user, project_id)
-    debugger
     user = User.find(user[0].id) # Ensure that we have a single user instance
     if user.assigned_projects.include?(project_id)
       user.assigned_projects.delete(project_id)

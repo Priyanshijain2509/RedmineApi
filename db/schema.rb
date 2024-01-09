@@ -147,7 +147,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_03_125257) do
     t.string "wiki_text"
     t.integer "project_id", null: false
     t.integer "created_by", null: false
-    t.integer "updated_by", null: false
+    t.integer "updated_by"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

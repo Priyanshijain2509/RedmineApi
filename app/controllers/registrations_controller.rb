@@ -32,6 +32,15 @@ class RegistrationsController < ApplicationController
     render json: { users: @users }
   end
 
+  def show
+    @user = User.find(params[:user_id])
+    if @user
+      render json: { message: 'Assignee fetched', user: @user }, status: :created
+    else
+      render json: { errors: @user.errors.full_messages }, status: :bad_request
+    end
+  end
+  
   private
 
   def user_params

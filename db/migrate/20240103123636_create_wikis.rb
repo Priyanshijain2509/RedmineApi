@@ -4,7 +4,7 @@ class CreateWikis < ActiveRecord::Migration[7.0]
       t.string :wiki_text
       t.integer :project_id, null: false
       t.integer :created_by, null: false
-      t.integer :updated_by, null: false
+      t.integer :updated_by
 
       t.timestamps
     end
