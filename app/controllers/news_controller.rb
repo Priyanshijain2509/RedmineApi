@@ -1,7 +1,6 @@
 class NewsController < ApplicationController
   def create
     @news = News.new(news_params)
-    debugger
     if @news.save
       render json: { message: 'News added' }, status: :created
     else

@@ -1,5 +1,6 @@
 class News < ApplicationRecord
   belongs_to :project
+  has_many :comments, dependent: :destroy
 
   validates :news_title, presence: true, length: { minimum: 3, maximum: 20 }
   validates :news_added_by, presence: true, length: { minimum: 3, maximum: 20 }

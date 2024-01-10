@@ -15,6 +15,16 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def info
+    @project = User.find(params[:project_id])
+    if @project
+      render json: { message: 'Project details fetched', project: @project },
+      status: :ok
+    else
+      render json: { errors: @project.errors.full_messages }, status: :bad_request
+    end
+  end
+
   def addContributor
     @project = Project.find_by(id: params[:project_id])
     existing_assigned_to = @project.assigned_to || []

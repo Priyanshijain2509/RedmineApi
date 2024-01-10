@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   post '/users/:user_id/projects/:project_id/addContributor', to: 'projects#addContributor'
   post '/users/:user_id/projects/:project_id/removeContributor', to: 'projects#removeContributor'
   get '/users/:user_id/projects/:project_id/fetchContributors', to: 'projects#fetchContributors'
+  get '/users/:user_id/projects/:project_id/info', to: 'projects#info'
 
   post '/users/:user_id/projects/:project_id/issues', to: 'issues#create'
   get '/users/:user_id/projects/:project_id/issues', to: 'issues#index'
@@ -31,6 +32,9 @@ Rails.application.routes.draw do
   get '/users/:user_id/projects/:project_id/news', to: 'news#index'
   get '/users/:user_id/projects/:project_id/news/:news_id', to: 'news#show'
   patch '/users/:user_id/projects/:project_id/news/:news_id/update', to: 'news#update'
+
+  post '/users/:user_id/projects/:project_id/news/:news_id/comments', to: 'comments#create'
+  get '/users/:user_id/projects/:project_id/news/:news_id/comments', to: 'comments#index'
 
   devise_for :users
   # devise_scope :user do
