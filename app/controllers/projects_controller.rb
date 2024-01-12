@@ -16,7 +16,7 @@ class ProjectsController < ApplicationController
   end
 
   def info
-    @project = User.find(params[:project_id])
+    @project = Project.find(params[:project_id])
     if @project
       render json: { message: 'Project details fetched', project: @project },
       status: :ok
@@ -55,7 +55,6 @@ class ProjectsController < ApplicationController
     end
   end
 
-
   def fetchContributors
     @project = Project.find_by(id: params[:project_id])
     @contributors_ids = @project.assigned_to || []
@@ -67,6 +66,34 @@ class ProjectsController < ApplicationController
     end
     if @contributors
       render json: { contributors: @contributors }, status: :ok
+    else
+      render json: { errors: @project.errors.full_messages }, status: :bad_request
+    end
+  end
+
+  def overview
+    @issues = Project.find(params[:project_id]).issues;
+    bug_issue_not_resolved = @issues.where(issue_resolved: false, tracker: 'Bug').count
+    bug_issue_resolved = @issues.where(issue_resolved: true, tracker: 'Bug').count
+    bug_total =  @issues.where(tracker: 'Bug').count;
+    feature_issue_not_resolved = @issues.where(issue_resolved: false, tracker: 'Feature').count;
+    feature_issue_resolved = @issues.where(issue_resolved: true, tracker: 'Feature').count;
+    feature_total = @issues.where(tracker: 'Feature').count;
+    patch_issue_not_resolved = @issues.where(issue_resolved: false, tracker: 'Patch').count;
+    patch_issue_resolved = @issues.where(issue_resolved: true, tracker: 'Patch').count;
+    patch_total = @issues.where(tracker: 'Patch').count;
+    if @issues
+      render json: {
+        bug_issue_not_resolved: bug_issue_not_resolved,
+        bug_issue_resolved:bug_issue_resolved,
+        bug_total: bug_total,
+        feature_issue_not_resolved: feature_issue_not_resolved,
+        feature_issue_resolved: feature_issue_resolved,
+        feature_total: feature_total,
+        patch_issue_not_resolved: patch_issue_not_resolved,
+        patch_issue_resolved: patch_issue_resolved,
+        patch_total: patch_total
+            }, status: :ok
     else
       render json: { errors: @project.errors.full_messages }, status: :bad_request
     end

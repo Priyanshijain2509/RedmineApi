@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   post '/users/:user_id/projects/:project_id/removeContributor', to: 'projects#removeContributor'
   get '/users/:user_id/projects/:project_id/fetchContributors', to: 'projects#fetchContributors'
   get '/users/:user_id/projects/:project_id/info', to: 'projects#info'
+  get '/users/:user_id/projects/:project_id/overview', to: 'projects#overview'
 
   post '/users/:user_id/projects/:project_id/issues', to: 'issues#create'
   get '/users/:user_id/projects/:project_id/issues', to: 'issues#index'

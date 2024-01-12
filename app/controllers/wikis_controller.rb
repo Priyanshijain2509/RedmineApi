@@ -18,7 +18,7 @@ class WikisController < ApplicationController
     else
       render json: { errors: @wiki.errors.full_messages }, status: :bad_request
     end
-  end
+  end 
 
   def show
     @wiki = Wiki.find(params[:wiki_id])
